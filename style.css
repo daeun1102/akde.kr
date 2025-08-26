@@ -1,0 +1,211 @@
+/* reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* base */
+body {
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  --footer-h: 60px;
+  font-family: "SUIT", sans-serif; /* ✅ 중복 body 합침 */
+}
+
+/* background */
+#bgImage {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  object-fit: cover;
+  z-index: -1;
+}
+
+/* main image container */
+#image-container {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1;
+}
+
+/* main image */
+#mainImage {
+  width: 200px;
+  transition: all 0.6s ease;
+  cursor: pointer;
+  position: relative;
+  z-index: 2;
+}
+#mainImage.hover-invert:hover { filter: invert(100%); }
+#mainImage.no-hover:hover { filter: none; }
+#mainImage.animated { opacity: 0; transform: scale(0.8); }
+#mainImage.show { opacity: 1; transform: scale(1); }
+#mainImage.enlarged { width: 700px; }
+#mainImage.custom-cursor { cursor: url('images/cursor.png') 15 15, auto; }
+
+/* tooltip */
+.tooltip {
+  position: absolute;
+  top: -30px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: #fff;
+  font-size: 23px;
+  font-weight: bold;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  z-index: 3;
+  display: block;
+}
+/* 오직 img1.png일 때만, 클래스 조건 만족 시 보여줌 */
+#mainImage.has-tooltip:hover + .tooltip { opacity: 1; }
+
+/* footer */
+footer {
+  position: fixed;
+  left: 0; right: 0; bottom: 0;
+  z-index: 50;
+  height: var(--footer-h);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-size: 15px;
+  opacity: .9;
+  color: #fff;
+}
+footer p { padding: 0 12px; }
+
+/* selection */
+::selection {
+  background: yellow;
+  color: #000;
+}
+
+/* reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* base */
+body {
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  --footer-h: 60px;
+  font-family: "SUIT", sans-serif; /* ✅ 중복 body 합침 */
+}
+
+/* background */
+#bgImage {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  object-fit: cover;
+  z-index: -1;
+}
+
+/* main image container */
+#image-container {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1;
+}
+
+/* main image */
+#mainImage {
+  width: 200px;
+  transition: all 0.6s ease;
+  cursor: pointer;
+  position: relative;
+  z-index: 2;
+}
+#mainImage.hover-invert:hover { filter: invert(100%); }
+#mainImage.no-hover:hover { filter: none; }
+#mainImage.animated { opacity: 0; transform: scale(0.8); }
+#mainImage.show { opacity: 1; transform: scale(1); }
+#mainImage.enlarged { width: 700px; }
+#mainImage.custom-cursor { cursor: url('images/cursor.png') 15 15, auto; }
+
+/* tooltip */
+.tooltip {
+  position: absolute;
+  top: -30px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: #fff;
+  font-size: 23px;
+  font-weight: bold;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  z-index: 3;
+  display: block;
+}
+/* 오직 img1.png일 때만, 클래스 조건 만족 시 보여줌 */
+#mainImage.has-tooltip:hover + .tooltip { opacity: 1; }
+
+/* footer */
+footer {
+  position: fixed;
+  left: 0; right: 0; bottom: 0;
+  z-index: 50;
+  height: var(--footer-h);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-size: 15px;
+  opacity: .9;
+  color: #fff;
+}
+footer p { padding: 0 12px; }
+
+/* selection */
+::selection {
+  background: yellow;
+  color: #000;
+}
+
+/* 📱 모바일 전용 스타일 */
+@media (max-width: 768px) {
+  /* (다른 페이지 호환 위해 유지) */
+  .logo-wrapper img {
+    height: 40px;
+    top: 20px;
+  }
+
+  /* 메인 이미지 */
+  #mainImage { width: 150px; }
+  #mainImage.enlarged { width: 350px; }
+
+  /* 툴팁 */
+  .tooltip {
+    font-size: 16px;
+    top: -25px;
+  }
+
+  /* footer */
+  footer { font-size: 15px; }
+}

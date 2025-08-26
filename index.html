@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>akde</title>
+
+  <!-- 폰트 & 공통 스타일 -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/sunn-us/SUIT@latest/css/suit.css" />
+  <link rel="stylesheet" href="style.css" />
+
+  <!-- 노트 전용 스타일 -->
+  <link rel="stylesheet" href="memo.css" />
+
+  <!-- 파비콘 -->
+  <link rel="icon" type="image/png" href="images/favicon.png">
+</head>
+<body>
+  <!-- 배경 -->
+  <img id="bgImage" src="images/bg.png" alt="배경" />
+
+  <!-- 기존 이미지 + 말풍선 -->
+  <div id="image-container">
+    <img id="mainImage" src="images/gif1.gif" class="hover-invert" alt="메인 이미지" />
+  </div>
+
+  <!-- 메모 -->
+  <div class="memo" id="memo1" aria-label="메모">
+    <div class="memo-header">
+      <span class="memo-title">akde's profile</span>
+      <div class="memo-buttons">
+        <button class="min-btn" type="button" aria-label="메모 축소">−</button>
+        <button class="close-btn" type="button" aria-label="메모 닫기">×</button>
+      </div>
+    </div>
+
+    <div class="memo-content">
+      <textarea aria-label="메모 내용">
+about me
+안김다은
+2001.11.02
+
+contact
+010-6430-6076
+ankimdaeun@gmail.com
+@akdeun(insta)
+
+education
+아주대학교 문화콘텐츠학과 졸업 예정
+취득학점: 120 | 평균학점: 4.41
+
+license
+2종 보통 자동차운전면허증
+어도비 프리미어 자격증 ACP
+
+tool
+Illustrator ￭ ￭ ￭ ￭ ￭
+Photoshop ￭ ￭ ￭
+Premier Pro ￭ ￭
+PowerPoint ￭ ￭
+
+experience
+인턴
+[2024.03 - 2024.08] HYBE 계열사 위버스컴퍼니에서 운영하는 웹진 ‘위버스매거진’ 크리에이티브n지원 팀 소속
+
+교외
+[2022.02 - 2022.12] 국립현대무용단 제14기 대학생 커뮤니케이터 ‘춤·사이’ 소속
+[2022.04 - 2022.10] 2022년도 제53회 대한전기학회 하계학술대회 참여 및 ‘몰입형 미디어 전시 공간에서의 전자파 노출 안전 표준' 연구
+
+교내
+[2022.02 - 2023.08] 학과 내 최초 문화예술학회 ‘ARTIS’ 창립 및 임원진 소속
+[2022.07 - 2022.12] 독립서적과 수원 내 독립책방을 집중 조명한 출판 콘텐츠 ‘BOOKJAK’ 기획 및 제작
+[2023.03 - 2023.12] 교내 대학혁신지원사업 서포터즈 ‘AINNO’ 홍보 동영상 팀 소속
+
+개인작업
+[2023.07 - 2023.12] 2023년의 우리를 사진과 인터뷰로 기록한 ‘322club’ 프로젝트 기획 및 촬영
+[2023.09 - 2024.03] 시각화에 특화된 예술적 시각 창작 스튜디오 ‘자경단’ 디자인 팀 소속
+[2024.09 - 2024.12] 대학 밴드 연합 공연 ‘눈이 내릴락 말락도 락이다’ 기획 및 디자인
+[2025.02 - 2025.03] 해든 안박 ‘Snow and Ashes: The anti-war lullaby - Single’ 앨범 커버 디자인
+
+>>>> click 'AKDE' >>>>
+</textarea>
+    </div>
+
+    <!-- 모서리 리사이즈 핸들 -->
+    <div class="resize-handle br"></div>
+    <div class="resize-handle bl"></div>
+    <div class="resize-handle tr"></div>
+    <div class="resize-handle tl"></div>
+
+    <!-- 네 변 -->
+    <div class="resize-handle right"></div>
+    <div class="resize-handle left"></div>
+    <div class="resize-handle bottom"></div>
+    <div class="resize-handle top"></div>
+  </div>
+
+  <footer>
+    <p>&copy; 2025 akde. All rights reserved.</p>
+  </footer>
+
+  <!-- 기존 스크립트(있다면) -->
+  <script src="script.js"></script>
+
+  <!-- 노트 스크립트 -->
+  <script src="memo.js"></script>
+
+  <!-- 커서 스타일 & 스크립트 -->
+  <link rel="stylesheet" href="cursor.css">
+  <script src="cursor.js" defer></script>
+  <div class="trail-container"></div>
+</body>
+</html>

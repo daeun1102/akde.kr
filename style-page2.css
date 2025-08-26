@@ -1,0 +1,222 @@
+/* style-page2.css (nextpage 스타일 기준으로 수정됨) */
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: "SUIT", sans-serif;
+  background-color: #ffffff;
+  color: #111;
+  line-height: 1.6;
+  overflow-x: hidden;
+  background-image:url('images/bg2.png');
+  background-size:cover; background-position:center; background-attachment:fixed;
+  --footer-h: 60px;  
+}
+
+.container {
+  display: flex;
+  flex-direction: row;
+  padding: 90px;
+  padding-top:100px;
+  /* ✅ 고정 푸터와 겹침 방지를 위해 하단 여백 확보 */
+  padding-bottom: calc(var(--footer-h) + 24px);
+  max-width: 1250px;
+  margin: auto;
+  justify-content: center;
+  height: auto;
+}
+
+.left-pane,
+.right-pane {
+  width: 50%;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding: 0;
+}
+
+.left-pane img {
+  max-width: 93%;
+  height: auto;
+  margin-top: 5px;
+  margin-bottom: 0;
+}
+.right-pane img {
+  max-width: 100%;
+  height: auto;
+  margin-top: 5px;
+  margin-bottom: 0;
+}
+
+/* =========================
+   로고
+   ========================= */
+.logo-wrapper {
+  position: fixed; top: 0; left: 0;
+  width: 100%; height: var(--logo-h-desktop);
+  z-index: 100;
+}
+.logo-wrapper img {
+  position: absolute; top: 100px; left: 150px; height: 70px; z-index: 10;
+  cursor: pointer;
+}
+
+.left-pane p:first-of-type,
+.right-pane p:first-of-type { margin-bottom: 10px; }
+
+.left-pane h2,
+.right-pane h2 { margin-bottom: 5px; margin-top: 0; }
+
+/* 텍스트 스타일 */
+h2 { font-size: 18px; font-weight: 800; color: red; margin-bottom: 10px; }
+h3 { font-size: 15px; font-weight: bold; margin: 20px 0 5px; }
+h4 { font-size: 14px; font-weight: normal; color: rgb(156, 156, 156); }
+h5 { font-size: 14px; font-weight: normal; color: rgb(0, 0, 0); line-height: 1.8; }
+
+::selection {
+  background: yellow; 
+  color: rgb(0, 0, 0);
+}
+
+.scroll-inline { white-space: nowrap; overflow-x: auto; display: block; }
+
+/* ===== footer ===== */
+footer{
+  position:fixed; left:0; right:0; bottom:0; z-index:50;
+  height: var(--footer-h);
+  display:flex; align-items:center; justify-content:center;
+  text-align:center; font-size:15px; opacity:.9; color:#000000;
+}
+footer p{ padding:0 12px; }
+
+/* 커피 버튼 + 툴팁 */
+.floating-button { position: fixed; bottom: 100px; right: 150px; z-index: 99; }
+.coffee-float { width: 60px; cursor: pointer; }
+.has-tooltip + .tooltip {
+  position: absolute; bottom: 100%; right: 0;
+  color: rgb(0, 239, 180); padding: 6px 10px; border-radius: 5px;
+  font-size: 14px; white-space: nowrap; opacity: 0; transition: opacity 0.3s ease;
+  pointer-events: none; transform: translateY(-5px);
+}
+.has-tooltip:hover + .tooltip { opacity: 1; }
+
+/* 뒤로가기 (좌측 하단) */
+.back-button { position: fixed; bottom: 100px; left: 150px; z-index: 99; }
+.back-button-float { width: 60px; cursor: pointer; }
+.back-button:hover { opacity: 1; }
+.back-button img { width: 60px; height: auto; }
+
+/* 커서 트레일 */
+.trail-container { position: fixed; top: 0; left: 0; pointer-events: none; z-index: 10000; }
+.trail-dot {
+  position: absolute; width: 15px; height: 15px; background-size: contain; background-repeat: no-repeat;
+  image-rendering: pixelated; transform: translate(-50%, -50%); opacity: 1;
+}
+
+/* 레이어와 포인터 이벤트 정리 */
+#random-image-container {
+  position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+  z-index: 1000;
+  pointer-events: none; /* 컨테이너는 클릭 막음 */
+}
+.random-image-wrapper {
+  position: absolute;
+  z-index: 1000;
+  /* 중요: 래퍼는 클릭 가능해야 X버튼 눌림 */
+  pointer-events: auto;
+}
+.random-image { width: 300px; height: auto; display: block; }
+.random-image.smaller { width: 260px; }
+
+/* X 버튼(닫기) */
+.x-hit-area {
+  position: absolute; top: -10px; left: -10px; width: 40px; height: 40px;
+  background-image: url('images/x-icon.png'); background-size: contain; background-repeat: no-repeat;
+  cursor: pointer; z-index: 1001; border: 0; background-color: transparent;
+}
+
+/* 모바일 축소(랜덤 이미지 전용 보정) */
+@media (max-width: 768px) {
+  .random-image { width: 220px !important; }
+  .random-image.smaller { width: 180px !important; }
+  .x-hit-area { top: -8px !important; left: -8px !important; width: 32px !important; height: 32px !important; }
+}
+
+/* =========================
+   📱 MOBILE BASELINE (≤768px)
+   ========================= */
+@media (max-width: 768px) {
+  :root{
+    --m-side: 16px;
+    --m-bottom: 24px;
+    --m-font: 13px;
+    --m-foot-font: 15px; /* ✅ 요구대로 모바일도 15px */
+    --m-maxw: 680px;
+  }
+      
+  .container {
+    flex-direction: column !important;
+    padding: 0 var(--m-side) !important;
+    padding-top: 140px !important;
+    /* ✅ 고정 푸터와 겹치지 않도록 하단 여유 크게 확보 */
+    padding-bottom: calc(var(--footer-h) + 80px) !important;
+    width: min(92vw, var(--m-maxw)) !important;
+    max-width: none !important;
+    margin: 0 auto !important;
+    gap: 8px !important;
+  }
+
+  .left-pane, .right-pane {
+    width: 100% !important;
+    padding: 0 !important;
+    align-items: flex-start !important;
+  }
+  .left-pane img, .right-pane img {
+    max-width: 100% !important; height: auto !important; margin-top: 6px !important;
+  }
+
+  body { font-size: var(--m-font) !important; }
+  h2 { font-size: 13px !important; font-weight: 800 !important; margin: 0 0 8px !important; color: red !important; }
+  h3 { font-size: 13px !important; font-weight: 700 !important; margin: 10px 0 6px !important; }
+  h4 { font-size: 13px !important; font-weight: 400 !important; color: rgb(156,156,156) !important; }
+  h5 { font-size: 13px !important; font-weight: 400 !important; line-height: 1.7 !important; }
+
+  .scroll-inline { white-space: normal !important; overflow-x: visible !important; }
+
+  .floating-button { bottom: var(--m-bottom) !important; right: var(--m-side) !important; z-index: 99 !important; }
+  .coffee-float { width: 48px !important; }
+
+  .back-button { bottom: var(--m-bottom) !important; left: var(--m-side) !important; z-index: 99 !important; }
+  .back-button img, .back-button-float { width: 48px !important; height: auto !important; }
+
+  .has-tooltip + .tooltip { font-size: 12px !important; right: 0 !important; }
+
+  /* ✅ 모바일에서도 푸터 글씨는 15px */
+  footer { font-size: var(--m-foot-font) !important; padding: 20px !important; }
+}
+
+/* =========================
+   📱 MOBILE (≤640px): 로고/푸터 공통 규칙
+   ========================= */
+@media (max-width: 640px) {
+  .logo-wrapper img {
+    top: 40px;    /* 상단 여백 */
+    left: 40px;   /* 좌측 여백 */
+    height: 50px; /* 모바일 로고 크기 */
+  }
+  /* 푸터는 15px 유지 - 위의 768px 구간에서 이미 15px로 설정됨 */
+}
+
+@media (max-width: 768px) {
+  .floating-button {
+    bottom: 40px !important;
+    right: 40px !important;
+  }
+  .back-button {
+    bottom: 40px !important;
+    left: 40px !important;
+  }
+}
+

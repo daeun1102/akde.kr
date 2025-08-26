@@ -1,0 +1,197 @@
+/* =========================
+   변수
+   ========================= */
+:root{
+  --logo-h-desktop: 200px;     /* 데스크탑 로고 영역 높이 */
+  --logo-h-mobile: 120px;      /* 모바일 로고 영역 높이 */
+  --slide-maxw: 700px;         /* 슬라이드 최대 폭 */
+  --footer-gap-desktop: 80px;  /* 스테이지-푸터 간격 */
+  --footer-h: 60px;            /* 푸터 높이 */
+}
+
+/* =========================
+   리셋/베이스
+   ========================= */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html, body {
+  height: 100%;
+}
+
+body {
+  font-family: "SUIT", sans-serif;
+  background-color: #ffffff;
+  color: #111;
+  line-height: 1.6;
+  overflow-x: hidden;
+
+  background-image:url('images/bg4.png');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+
+  display: flex;
+  flex-direction: column;
+}
+
+/* =========================
+   로고
+   ========================= */
+.logo-wrapper {
+  position: fixed; top: 0; left: 0;
+  width: 100%; height: var(--logo-h-desktop);
+  z-index: 100;
+}
+.logo-wrapper img {
+  position: absolute; top: 100px; left: 150px; height: 70px; z-index: 10;
+  cursor: pointer;
+}
+
+/* =========================
+   뒤로가기 버튼
+   ========================= */
+.back-button {
+  position: fixed; bottom: 100px; left: 150px; z-index: 99;
+}
+.back-button img { width: 60px; height: auto; }
+.back-button:hover { opacity: 1; }
+
+/* =========================
+   커서 꼬리
+   ========================= */
+.trail-container { position: fixed; top: 0; left: 0; pointer-events: none; z-index: 9999; }
+.trail-dot {
+  position: absolute; width: 15px; height: 15px;
+  background-size: contain; background-repeat: no-repeat;
+  image-rendering: pixelated; transform: translate(-50%, -50%);
+}
+
+/* =========================
+   중앙 배치(스테이지)
+   ========================= */
+.stage {
+  min-height: calc(100vh - var(--logo-h-desktop));
+  display: flex;                 /* grid → flex */
+  align-items: center;           /* 세로 가운데 정렬 */
+  justify-content: center;       /* 가로 가운데 정렬 */
+  padding-top: 150px;                /* 불필요한 패딩 제거 */
+}
+
+
+.stage-bottom-gap { height: var(--footer-gap-desktop); }
+
+/* =========================
+   슬라이드
+   ========================= */
+.slide-wrapper {
+  width: 100%;
+  max-width: var(--slide-maxw);
+  margin: 0 auto;
+  position: relative;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: visible;          /* 화살표 안 잘리게 */
+}
+
+.slide-mask {
+  width: 100%;
+  max-width: var(--slide-maxw);
+  overflow: hidden;
+}
+
+.slide-view {
+  display: flex;                  /* 가로 나열 */
+  width: 100%;
+  will-change: transform;
+  transition: transform 0.5s ease-in-out;
+}
+
+.slide-item {
+  width: 100%; flex: 0 0 100%;
+  display: flex; flex-direction: column; align-items: center;
+}
+.slide-image { width: 100%; height: auto; display: block; }
+
+/* 화살표 버튼 */
+.slide-btn {
+  position: absolute; top: 60%; transform: translateY(-50%);
+  background: transparent; border: none; cursor: pointer; user-select: none;
+  z-index: 1000; padding: 0;
+}
+.slide-btn.prev { left: -30px; }
+.slide-btn.next { right: -30px; }
+.arrow-icon { width: 20px; height: auto; pointer-events: none; }
+
+::selection {
+  background: yellow; 
+  color: rgb(0, 0, 0);     /* 글자색 */
+}
+
+/* =========================
+   푸터
+   - 데스크톱: 흐름에 따라 자연스럽게 아래
+   - 모바일: 고정
+   ========================= */
+footer{
+  position: static;
+  height: var(--footer-h);
+  display:flex; align-items:center; justify-content:center;
+  text-align:center; font-size:15px; opacity:.9; color:#000000;
+  margin-top: auto; /* 본문이 짧아도 바닥에 */
+}
+footer p{ padding:0 12px; }
+
+@media (max-width: 768px) {
+  html, body { font-size: 13px; overflow-x: hidden; }
+
+  /* 로고: 공통 규칙 적용 */
+  .logo-wrapper { height: var(--logo-h-mobile); }
+  .logo-wrapper img { top: 40px; left: 40px; height: 50px; }
+
+  /* 스테이지 */
+  .stage {
+    position: relative !important;
+    min-height: calc(100vh - var(--logo-h-mobile)) !important;
+    display: block !important;
+    flex: 1;
+    /* ✅ 푸터와 겹치지 않도록 여유 */
+    padding-bottom: calc(var(--footer-h) + 80px) !important;
+  }
+
+  .slide-wrapper {
+    position: absolute !important;
+    left: 50% !important;
+    top: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    width: min(92vw, var(--slide-maxw)) !important;
+    max-width: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .slide-mask { width: 100%; max-width: none; overflow: hidden; }
+  .slide-item { padding: 0 16px; }
+
+  /* 화살표 */
+  .slide-btn {
+    position: absolute !important;
+    top: 55% !important;
+    transform: translateY(-50%) !important;
+    padding: 12px; border-radius: 12px; z-index: 5;
+  }
+  .slide-btn.prev { left: 8px !important; }
+  .slide-btn.next { right: 8px !important; }
+  .arrow-icon { width: 18px; }
+
+  /* 뒤로가기: 공통 규칙 적용 */
+  .back-button { bottom: 40px !important; left: 40px !important; }
+  .back-button img { width: 48px; height: auto; }
+
+  /* 푸터: 15px 유지 */
+  footer{ 
+    position: fixed; left:0; right:0; bottom:0;
+    font-size: 15px !important; padding: 20px;
+  }
+}

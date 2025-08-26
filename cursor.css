@@ -1,0 +1,12 @@
+/* === Magic Trail (추가) === */
+#magicTrail {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999; /* 커서보다 위, 모달/툴팁과는 상황에 맞춰 조절 */
+}
+
+/* 접근성 & 모바일: 자동 비활성화 */
+@media (pointer: coarse), (prefers-reduced-motion: reduce) {
+  #magicTrail { display: none; }
+}

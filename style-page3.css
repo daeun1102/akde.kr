@@ -1,0 +1,174 @@
+/* style-page2.css (nextpage 스타일 기준으로 수정됨) */
+
+/* reset */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+/* base */
+html, body { height: 100%; display: flex; flex-direction: column; }
+
+body {
+  font-family: "SUIT", sans-serif;
+  background-color: #ffffff;
+  color: #111;
+  line-height: 1.6;
+  overflow-x: hidden;
+  background-image:url('images/bg3.png');
+  background-size:cover; background-position:center; background-attachment:fixed;
+  --footer-h: 60px; 
+}
+
+/* 로고 */
+.logo-wrapper {
+  position: fixed; top: 0; left: 0;
+  width: 100%; height: var(--logo-h-desktop, 200px);
+  z-index: 100;
+  /* ✅ 투명 영역이 클릭 가로채지 않게 */
+  pointer-events: none;
+}
+/* ↘↘ 이렇게 바꿔줘 */
+.logo-wrapper { 
+  pointer-events: none;          /* 투명 영역은 클릭 통과 */
+  position: fixed; top: 0; left: 0;
+  width: 100%; height: var(--logo-h-desktop, 200px);
+  z-index: 100;
+}
+.logo-wrapper a { 
+  pointer-events: auto;          /* 로고 링크만 클릭 가능 */
+  display: inline-block;         /* 안전한 박스화 */
+}
+.logo-wrapper img {
+  position: absolute;            /* ✅ 이미지에만 좌표 */
+  top: 100px; 
+  left: 150px; 
+  height: 70px; 
+  z-index: 10;
+  cursor: pointer;
+}
+
+
+/* 컨텐츠 영역 */
+.container {
+  display: flex;
+  flex-direction: row;
+  padding: 90px;
+  /* ✅ 로고 높이만큼 안전 여백 (100px 고정보다 안정적) */
+  padding-top: calc(var(--logo-h-desktop, 100px) + 10px);
+  /* ✅ 푸터와 겹치지 않도록 하단 여유 확보 */
+  padding-bottom: calc(var(--footer-h) + 24px);
+  max-width: 1250px;
+  margin: auto;
+  justify-content: center;
+  height: auto;
+  gap: 10px;
+}
+
+/* 좌측 플레이리스트 이미지들 */
+.left-pane {
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  gap: 12px; 
+}
+.playlist-box {
+  width: auto;
+  height: 64px;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+  margin-right: 15px;
+}
+#box1, #box9, #box10, #box13 { height: 90px !important; }
+.playlist-box:hover { transform: scale(1.02); }
+
+/* 우측 설명 텍스트 */
+.right-pane {
+  padding-top: 20px;
+  flex: 1;
+  font-size: 15px;
+  line-height: 1.9;
+  color: #111;
+}
+
+/* 텍스트 스타일 */
+h2 { font-size: 18px; font-weight: 800; color: red; margin-bottom: 10px; }
+h3 { font-size: 14px; font-weight: bold; margin: 5px 0 5px; }
+h4 { font-size: 14px; font-weight: normal; color: rgb(156, 156, 156); }
+h5 { font-size: 14px; font-weight: normal; color: #000; line-height: 1.8; }
+
+::selection { background: yellow; color: #000; }
+
+/* 푸터 */
+footer{
+  position:fixed; left:0; right:0; bottom:0; z-index:50;
+  height: var(--footer-h);
+  display:flex; align-items:center; justify-content:center;
+  text-align:center; font-size:15px; opacity:.9; color:#000000;
+}
+footer p{ padding:0 12px; }
+
+/* 커피 버튼 + 툴팁 */
+.floating-button { position: fixed; bottom: 100px; right: 150px; z-index: 99; }
+.coffee-float { width: 60px; cursor: pointer; }
+.has-tooltip + .tooltip{
+  position: absolute; bottom: 100%; right: 0;
+  color: rgb(0, 239, 180); padding: 6px 10px; border-radius: 5px;
+  font-size: 14px; white-space: nowrap; opacity: 0; transition: opacity .3s ease;
+  pointer-events: none; transform: translateY(-5px);
+}
+.has-tooltip:hover + .tooltip{ opacity: 1; }
+
+/* 뒤로가기 */
+.back-button { position: fixed; bottom: 100px; left: 150px; z-index: 99; }
+.back-button-float { width: 60px; cursor: pointer; }
+.back-button:hover { opacity: 1; }
+.back-button img { width: 60px; height: auto; }
+
+/* =========================
+   📱 모바일 전용(≤768px)
+   ========================= */
+@media (max-width: 768px) {
+  :root{
+    --m-side: 16px;
+    --m-bottom: 24px;
+    --m-font: 13px;
+    --m-maxw: 680px;
+    --logo-h-mobile: 120px; /* 모바일 로고 높이 기본값 */
+  }
+
+  /* 로고: 공통 규칙(40/40/50) 적용 */
+  .logo-wrapper { height: var(--logo-h-mobile); }
+  .logo-wrapper img { top: 40px; left: 40px; height: 50px; }
+
+  /* 2열 → 1열, 하단 여유 크게 */
+  .container {
+    flex-direction: column !important;
+    padding: 0 var(--m-side) !important;
+    /* ✅ 로고 높이 기반 상단 여유 */
+    padding-top: calc(var(--logo-h-mobile) + 20px) !important;
+    /* ✅ 고정 푸터와 겹치지 않도록 하단 여유 크게 확보 */
+    padding-bottom: calc(var(--footer-h) + 80px) !important;
+    width: min(92vw, var(--m-maxw)) !important;
+    max-width: none !important;
+    margin: 0 auto !important;
+    gap: 12px !important;
+  }
+
+  .left-pane, .right-pane { width: 100% !important; }
+  .left-pane { flex-wrap: wrap; gap: 10px; }
+  .playlist-box { height: 52px; margin-right: 0; }
+  #box1, #box9, #box10, #box13 { height: 72px !important; }
+
+  .right-pane { font-size: var(--m-font); line-height: 1.8; }
+  h2 { font-size: 13px; font-weight: 800; margin-bottom: 8px; color: red; }
+  h3 { font-size: 13px; font-weight: 700; }
+  h4 { font-size: 13px; font-weight: 400; color: rgb(156,156,156); }
+  h5 { font-size: 13px; font-weight: 400; line-height: 1.7; margin-bottom: 18px; }
+
+  /* 하단 아이콘: 공통 규칙(40px) 적용 */
+  .floating-button { bottom: 40px !important; right: 40px !important; z-index: 99 !important; }
+  .back-button     { bottom: 40px !important; left:  40px !important; z-index: 99 !important; }
+  .coffee-float { width: 48px; }
+  .back-button img, .back-button-float { width: 48px; height: auto; }
+
+  /* 모바일 푸터: 15px 유지 */
+  footer { font-size: 15px !important; padding: 20px; }
+}

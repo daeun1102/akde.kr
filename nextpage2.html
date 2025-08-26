@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>akde</title>
+
+  <!-- 브라우저 탭 아이콘 -->
+  <link rel="icon" type="image/png" href="images/favicon.png">
+
+  <!-- SUIT 폰트 -->
+  <link href="https://fonts.googleapis.com/css2?family=SUIT&display=swap" rel="stylesheet">
+
+  <!-- 스타일 연결 -->
+  <link rel="stylesheet" href="style-page2.css" />
+
+  <style>
+    /* 📱 모바일 전용 스타일 */
+    @media (max-width: 640px) {
+      .logo-wrapper img {
+        top: 40px;   /* 상단 여백 */
+        left: 40px;  /* 좌측 여백 */
+        height: 50px;/* 모바일 로고 크기 */
+      }
+      footer {
+        font-size: 15px; /* ✅ 모바일에서도 동일 유지 */
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 로고 -->
+  <div class="logo-wrapper">
+    <a href="index.html">
+      <img src="images/logo_left.png" alt="홈으로" class="logo-left" />
+    </a>
+  </div>
+
+  <!-- 좌측 하단 뒤로가기 버튼 -->
+  <a href="nextpage.html" class="back-button">
+    <img src="images/dish.png" alt="이전 페이지로 이동" />
+  </a>
+
+  <!-- 우측 하단 다음 페이지 이동 버튼 -->
+  <div class="floating-button">
+    <img src="images/coffee-icon.png" alt="한 잔 더" class="coffee-float has-tooltip"
+         onclick="location.href='nextpage3.html'" />
+  </div>
+
+  <!-- 여러 이미지가 들어갈 컨테이너 -->
+  <div id="random-image-container"></div>
+
+  <!-- 본문 구조: 좌측 이미지 / 우측 설명 -->
+  <div class="container">
+    <!-- 왼쪽 영역 -->
+    <div class="left-pane">
+      <img src="images/nn_poster.png" alt="북작 목업">
+      <div style="margin-top: 10px;"></div>
+    </div>
+
+    <!-- 오른쪽 영역 -->
+    <div class="right-pane">
+      <div style="margin-top: 10px;"></div>
+
+      <!-- 애플뮤직 플레이어 -->
+      <iframe
+        allow="autoplay *; encrypted-media *;"
+        frameborder="0"
+        height="450"
+        style="width:100%; max-width:600px; margin-bottom: 20px; background:transparent;"
+        sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-storage-access-by-user-activation allow-top-navigation-by-user-activation"
+        src="https://embed.music.apple.com/kr/playlist/noon-is-rock/pl.u-JPAZZXPFLdM5ePr">
+      </iframe>
+
+      <h5>
+        〈noon is rock 눈이 내릴락 말락도 락이다〉는 작년 크리스마스이브에 개최된 대학 밴드 연합 공연입니다.
+        <br><br>
+        팀 섭외 단계부터 콘셉트 기획, 당일 현장 운영까지 모든 과정에 참여했으며, 디자인 업무를 총괄했습니다.
+        공연 홍보를 위해 노래 추천 콘텐츠를 만들어 매일 인스타그램 계정에 게시해 적극적으로 팔로워를 모았고, 
+        공식 포스터와 캐릭터, 굿즈 등을 제작해 온라인·오프라인에서 판매했습니다.
+        <br><br>
+        또한, 코스메틱 브랜드 '팁토우'에 먼저 연락하여 당시 ‘락시크 무드’로 홍보 중이던 메탈릭 네일 3종을 협찬받아 관람객에게 증정했습니다.
+      </h5>
+    </div>
+  </div> <!-- ✅ .container 닫힘 -->
+
+  <!-- 푸터 -->
+  <footer>
+    <p>&copy; 2025 akde. All rights reserved.</p>
+  </footer>
+
+  <!-- 랜덤 이미지 스크립트 -->
+  <script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const imageList = [
+      "images/random.png",
+      "images/random2.png",
+      "images/random3.png",
+      "images/random4.png"
+    ];
+
+    const container = document.getElementById("random-image-container");
+    if (!container) {
+      console.error("❌ 랜덤 이미지 컨테이너 없음!");
+      return;
+    }
+
+    // 초기화(중복 방지)
+    container.innerHTML = "";
+
+    imageList.forEach((src, i) => {
+      const wrapper = document.createElement("div");
+      wrapper.className = "random-image-wrapper";
+      wrapper.style.position = "absolute";
+
+      const imageWidth = 300;
+      const imageHeight = 300;
+
+      // 화면 안쪽으로 안전 배치 (가장자리 여백 16px)
+      const EDGE = 16;
+      const posX = Math.random() * (window.innerWidth  - imageWidth  - EDGE*2) + EDGE + imageWidth/2;
+      const posY = Math.random() * (window.innerHeight - imageHeight - EDGE*2) + EDGE + imageHeight/2;
+
+      wrapper.style.left = `${posX}px`;
+      wrapper.style.top  = `${posY}px`;
+      wrapper.style.transform = "translate(-50%, -50%)";
+
+      const img = document.createElement("img");
+      img.src = src;
+      img.alt = "랜덤";
+      img.className = src.includes("random.png") ? "random-image smaller" : "random-image";
+
+      const xBtn = document.createElement("button");
+      xBtn.type = "button";
+      xBtn.className = "x-hit-area";
+      xBtn.onclick = () => wrapper.remove();
+
+      wrapper.appendChild(img);
+      wrapper.appendChild(xBtn);
+      container.appendChild(wrapper);
+    });
+  });
+  </script>
+
+  <!-- 커서 스타일 & 스크립트 -->
+  <link rel="stylesheet" href="cursor.css">
+  <script src="cursor.js" defer></script>
+  <div class="trail-container"></div>
+
+</body>
+</html>

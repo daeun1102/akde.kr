@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>BOOKJAK | Independent Columns</title>
+<link href="https://fonts.googleapis.com/css2?family=SUIT:wght@300;400;600&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --logo-h: 150px;
+    --logo-h-desktop: var(--logo-h); /* ✅ 호환 변수 추가 (레이아웃 변화 없음) */
+    --thumb-w: 380px;          /* 썸네일 폭 */
+    --gap: 0px;                /* 좌/우 칼럼 사이 간격 */
+    --viewer-offset: -10px;    /* 좌측 프리뷰 개별 이동 (왼쪽(-), 오른쪽(+)) */
+    --thumbs-offset: -170px;   /* 우측 썸네일 개별 이동 (오른쪽으로 더 붙이려면 음수) */
+    --page-max: 1400px;
+    --footer-h: 60px;          /* 푸터 고정 높이(패딩/여백 포함 가늠치) */
+  }
+
+  /* reset */
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{min-height:100%}
+  body{
+    font-family:"SUIT",system-ui,-apple-system,sans-serif;
+    color:#111; line-height:1.6; overflow-x:hidden;
+    background-image:url('images/bg1.png');
+    background-size:cover; background-position:center; background-attachment:fixed;
+  }
+
+  /* 레이아웃 (부모는 중앙 정렬, 칼럼은 좌/우 고정) */
+  .container{
+    width:min(var(--page-max),92vw);
+    margin:0 auto;
+    padding:90px;
+    padding-top:calc(var(--logo-h) + 10px);
+    padding-bottom: calc(var(--footer-h) + 16px); /* footer에 가리지 않게 */
+    display:grid;
+    grid-template-columns: 1fr max-content;
+    column-gap: var(--gap);
+    align-items:start;
+    justify-content:space-between;
+  }
+
+  /* 좌측 프리뷰: 개별 오프셋 */
+  .viewer{
+    position:sticky; 
+    top:calc(var(--logo-h));
+    align-self:start;
+    margin-left: var(--viewer-offset);
+    overflow:visible; /* 핫스팟이 이미지 밖 살짝 나와도 보이게 */
+  }
+  /* 이미지 래퍼 + 이미지 */
+  .image-wrap{ position:relative; display:inline-block; width:80%; }
+  .image-wrap img{ width:90%; height:auto; display:block;
+                   filter: drop-shadow(0 8px 18px rgba(0,0,0,.18)); }
+
+  /* 우측 썸네일: 개별 오프셋 + footer 고려 높이 */
+  .thumbs{
+    width: var(--thumb-w);
+    justify-self:end;
+    margin-right: var(--thumbs-offset);
+    max-height: calc(100dvh - (var(--logo-h) + 16px) - var(--footer-h));
+    overflow-y:auto;
+    overflow-x:visible;
+    padding-left:6px;
+    padding-right:18px;
+    padding-top:14px;
+    scroll-padding-top:14px;
+    display:flex; flex-direction:column; gap:25px;
+    filter: drop-shadow(0 4px 10px rgba(0,0,0,.14));
+    /* ✅ 스크롤바 숨기기 */
+    scrollbar-width: none;      /* Firefox */
+    -ms-overflow-style: none;   /* IE, Edge 구버전 */
+  }
+  .thumbs::-webkit-scrollbar {  /* Chrome, Safari */
+    display: none;
+  }
+
+  .thumb{ cursor:pointer; user-select:none; padding-right: 10px; }
+  .thumb img{
+    width:100%; height:auto; display:block; object-fit:cover;
+    filter: drop-shadow(0 4px 10px rgba(0,0,0,.14));
+    transform: translateY(0) scale(1);
+    transition:
+      transform .22s cubic-bezier(.2,.8,.2,1),
+      filter .22s ease;
+    will-change: transform, filter;
+  }
+
+  /* gallery-04만 drop-shadow 제거 (썸네일 + 프리뷰) */
+  .thumb[data-src*="gallery-04.png"] img,
+  #mainImage[src*="gallery-04.png"] {
+    filter: none !important;
+  }
+
+  /* hover(및 키보드 포커스) 시: 더 크게, 더 위로 */
+  .thumb:hover img,
+  .thumb:focus-within img {
+    transform: translateY(-6px) scale(1.04);
+  }
+
+  /* 하단 고정 푸터 */
+  footer{
+    position:fixed; left:0; right:0; bottom:0; z-index:50;
+    height: var(--footer-h);
+    display:flex; align-items:center; justify-content:center;
+    text-align:center; font-size:15px; opacity:.9; color:#fff;
+  }
+  footer p{ padding:0 12px; }
+
+  /* ====== 개발용 핫스팟 박스 ====== */
+  .hotspot{
+    position:absolute; z-index:2;
+    display:none; /* 기본은 숨김 (JS가 gallery-03일 때만 보이게 변경) */
+    align-items:center; justify-content:center;
+    font-size:12px; font-weight:700; color:#ffffff00;
+    cursor:pointer; user-select:none;
+  }
+  /* BLOG 영역 (임시 값) */
+  .blog-link{ top:25px; right:350px; width:30px; height:30px; }
+  /* INSTAGRAM 영역 (임시 값) */
+  .insta-link{ top:25px; right:270px; width:70px; height:30px; }
+
+  .logo-wrapper {
+    position: fixed; top: 0; left: 0;
+    width: 100%; height: var(--logo-h-desktop);
+    z-index: 100;
+  }
+  .logo-wrapper img {
+    position: absolute; top: 100px; left: 150px; height: 70px; z-index: 10;
+    cursor: pointer;
+  }
+
+  /* 반응형 */
+
+  /* 📱 모바일 전용 스타일 */
+@media (max-width: 640px) {
+  .logo-wrapper img {
+    top: 40px;    /* 상단에서 20px 띄움 */
+    left: 40px;   /* 좌측에서 20px 띄움 */
+    height: 50px; /* 모바일에선 조금 축소 */
+  }
+}
+
+  /* footer */
+  footer { font-size: 15px; }
+
+  @media (max-width: 1200px){ :root{ --thumbs-offset: -120px; } }
+  @media (max-width: 1060px){ :root{ --thumb-w: 320px; --thumbs-offset: -80px; } }
+  @media (max-width: 900px){ :root{ --gap: 16px; --thumb-w: 260px; --thumbs-offset: -40px; } }
+  @media (max-width: 740px){ :root{ --thumb-w: 200px; --thumbs-offset: -20px; } }
+  @media (max-width: 640px){
+
+    .container{
+      grid-template-columns:1fr;
+      row-gap:14px;
+      padding:50px;
+      padding-top:calc(var(--logo-h) + 130px);
+      padding-bottom: calc(var(--footer-h) + 12px);
+    }
+    .viewer{ top:calc(var(--logo-h) + 4px); margin-left:0; }
+    .image-wrap{ width:100%; }
+    .thumbs{
+      width:100%; margin-right:0;
+      max-height:none; order:2;
+      flex-direction:row; gap:10px; overflow-x:auto; overflow-y:hidden;
+      align-items:center; padding:6px 0;
+    }
+    .thumb{ flex:0 0 auto; width:140px; }
+  }
+  /* 모바일(터치)에서는 과한 hover 비활성화 */
+  @media (hover: none), (pointer: coarse){
+    .thumb img{ transform:none !important; filter: drop-shadow(0 4px 10px rgba(0,0,0,.14)) !important; }
+  }
+
+  /* ✅ 좌측 프리뷰가 gallery-04일 때만 커서 변경 */
+  #mainImage[src*="gallery-04.png"] { cursor: pointer; }
+</style>
+</head>
+<body>
+
+  <!-- 로고 -->
+  <div class="logo-wrapper">
+    <a href="index.html">
+      <img src="images/logo_left.png" alt="홈으로" class="logo-left" />
+    </a>
+  </div>
+
+  <main class="container">
+    <!-- 좌측 프리뷰 (이미지 래퍼 + 핫스팟 포함) -->
+    <section class="viewer" aria-live="polite">
+      <div class="image-wrap" id="previewWrap">
+        <img id="mainImage" src="images/gallery-01.png" alt="미리보기">
+
+        <!-- BLOG 클릭 박스 -->
+        <a href="https://m.blog.naver.com/PostSearchList.naver?blogId=kncdc3472&orderType=sim&pageAccess=direct&periodType=all&searchText=%EC%95%88%EA%B9%80%EB%8B%A4%EC%9D%80"
+           target="_blank" class="hotspot blog-link">BLOG</a>
+
+        <!-- INSTAGRAM 클릭 박스 -->
+        <a href="https://www.instagram.com/choom.sai/"
+           target="_blank" class="hotspot insta-link">INSTA</a>
+      </div>
+    </section>
+
+    <!-- 우측 썸네일 -->
+    <aside class="thumbs" id="thumbList" aria-label="이미지 선택 목록">
+      <div class="thumb selected" data-src="images/gallery-01.png"><img src="images/gallery-01.png" alt=""></div>
+      <div class="thumb" data-src="images/gallery-02.png"><img src="images/gallery-02.png" alt=""></div>
+      <div class="thumb" data-src="images/gallery-03.png"><img src="images/gallery-03.png" alt=""></div>
+      <div class="thumb" data-src="images/gallery-04.png"><img src="images/gallery-04.png" alt=""></div>
+    </aside>
+  </main>
+
+  <footer><p>&copy; 2025 akde. All rights reserved.</p></footer>
+
+  <script>
+    // 썸네일 클릭 → 왼쪽 프리뷰 교체
+    const mainImg = document.getElementById('mainImage');
+    const list = document.getElementById('thumbList');
+    const hotspots = document.querySelectorAll('.hotspot');
+
+    function updateHotspotsVisibility(){
+      // gallery-03.png일 때만 핫스팟 노출
+      const isG3 = /gallery-03\.png$/i.test(mainImg.src);
+      hotspots.forEach(el => el.style.display = isG3 ? 'flex' : 'none');
+    }
+
+    list.addEventListener('click', (e) => {
+      const item = e.target.closest('.thumb');
+      if (!item) return;
+      document.querySelectorAll('.thumb').forEach(t => t.classList.remove('selected'));
+      item.classList.add('selected');
+      mainImg.src = item.getAttribute('data-src');
+      mainImg.alt = '미리보기';
+      item.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+      updateHotspotsVisibility();
+    });
+
+    // ✅ 좌측 프리뷰 이미지 클릭 시 gallery-04면 새 페이지로 이동
+    mainImg.addEventListener('click', () => {
+      if (/gallery-04\.png$/i.test(mainImg.src)) {
+        window.open("nextpage2.html", "_self"); // 새 페이지 경로로 교체
+      }
+    });
+
+    // 첫 로드 상태 반영
+    updateHotspotsVisibility();
+  </script>
+
+  <!-- 커서 스타일 & 스크립트 -->
+  <link rel="stylesheet" href="cursor.css">
+  <script src="cursor.js" defer></script>
+  <div class="trail-container"></div>
+  
+</body>
+</html>
